@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RunTabularEditor", "RunTabularEditor\RunTabularEditor.csproj", "{BCFCEBA2-AE58-4A08-A18C-C3641B5EDCAE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F46E731F-554C-4400-AF2E-66141B3FF8BB}"
+	ProjectSection(SolutionItems) = preProject
+		..\pipelines\deploy-function.ps1 = ..\pipelines\deploy-function.ps1
+		ReadMe.md = ReadMe.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCFCEBA2-AE58-4A08-A18C-C3641B5EDCAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCFCEBA2-AE58-4A08-A18C-C3641B5EDCAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCFCEBA2-AE58-4A08-A18C-C3641B5EDCAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCFCEBA2-AE58-4A08-A18C-C3641B5EDCAE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {305987DE-8D30-4FF5-9A67-A4203FA4FB58}
+	EndGlobalSection
+EndGlobal

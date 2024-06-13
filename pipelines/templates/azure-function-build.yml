@@ -1,0 +1,44 @@
+parameters:
+- name: projectName
+  default: 'RunTabularEditor'
+  type: string
+
+jobs:
+- job: Build_Function
+  displayName: Build Function
+  pool:
+    vmImage: windows-latest
+
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'Publish Project'
+    inputs:
+      command: 'publish'
+      projects: '**/${{ parameters.projectName }}.csproj'
+      arguments: '--configuration Release --output $(Agent.TempDirectory)/dist'
+      publishWebProjects: false
+      zipAfterPublish: false
+
+  - task: CopyFiles@2
+    displayName: Copy all other distributables
+    inputs:
+      SourceFolder: './functions/RunTabularEditor/src/RunTabularEditor/TabularEditor'
+      Contents: '**'
+      TargetFolder: '$(Agent.TempDirectory)/dist/RunTabularEditor/TabularEditor'
+      CleanTargetFolder: false
+      ignoreMakeDirErrors: true
+      flattenFolders: false
+
+  - task: ArchiveFiles@2
+    displayName: Create zip package
+    inputs:
+      rootFolderOrFile: '$(Agent.TempDirectory)/dist/RunTabularEditor'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/TabularEditor.zip'
+      replaceExistingArchive: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Artifact
+    inputs:
+      pathToPublish: $(Build.ArtifactStagingDirectory)

@@ -1,0 +1,39 @@
+parameters:
+- name: environment
+  default: ''
+  type: string
+
+- name: azureSubscription
+  default: ''
+  type: string
+
+- name: resourceGroupName
+  default: ''
+  type: string
+
+- name: functionName
+  default: ''
+  type: string
+
+jobs:
+- job: Deploy_Function
+  displayName: Deploy Function to ${{ parameters.environment }}
+  pool:
+    vmImage: windows-latest
+    
+  steps:
+    - task: DownloadBuildArtifacts@1
+      displayName: Download Artifact
+      inputs:
+        buildType: 'current'
+        downloadType: 'specific'
+        downloadPath: '$(System.ArtifactsDirectory)'
+        
+    - task: AzureFunctionApp@1
+      displayName: Zip-deployment of Function App to ${{ parameters.environment }}
+      inputs:
+        azureSubscription: '${{ parameters.azureSubscription }}'
+        resourceGroupName: '${{ parameters.resourceGroupName }}'
+        appType: 'functionApp'
+        appName: '${{ parameters.functionName }}'
+        package: '$(System.ArtifactsDirectory)/**/TabularEditor.zip'

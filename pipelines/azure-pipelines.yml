@@ -1,0 +1,56 @@
+name: DeployAzureFunction
+
+trigger:
+  branches:
+    include:
+    - 'main' # Change if necessary.
+    - 'develop'
+  paths:
+    include:
+    - '**/functions/RunTabularEditor/src/**/*' # Only run when Solution in RunTabularEditor folder is changed. Change folder path if necessary.
+    exclude:
+    - '**/*.md'
+    - '**/LICENSE'
+    - '**/*.yml'
+
+stages:
+
+- stage: Build
+  jobs:
+  - template: \functions\RunTabularEditor\pipelines\templates\azure-function-build.yml
+
+- stage: Development
+  dependsOn:
+    Build
+  condition: succeeded()
+  jobs:
+  - template: \functions\RunTabularEditor\pipelines\templates\azure-function-deployment.yml
+    parameters:
+      environment: Development
+      azureSubscription: ''
+      resourceGroupName: ''
+      functionName: ''
+
+- stage: UAT
+  dependsOn:
+    Development
+  condition: succeeded()
+  jobs:
+  - template: \functions\RunTabularEditor\pipelines\templates\azure-function-deployment.yml
+    parameters:
+      environment: UAT
+      azureSubscription: ''
+      resourceGroupName: ''
+      functionName: ''
+
+- stage: Production
+  dependsOn:
+    UAT
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  jobs:     
+  - template: \functions\RunTabularEditor\pipelines\templates\azure-function-deployment.yml
+    parameters:
+      environment: Production
+      azureSubscription: ''
+      resourceGroupName: ''
+      functionName: ''
